@@ -41,6 +41,7 @@ Install dependencies
 npm install dependencies
 ```
 Follow this guide to get the bot onto your desired server
+
 [Code Your Own Discord Bot](https://youtu.be/j_sD9udZnCk)
 
 **NOTE:  YOU WILL NEED TO ADD YOUR OWN:**
