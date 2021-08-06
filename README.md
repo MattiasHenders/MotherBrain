@@ -48,6 +48,7 @@ Follow this guide to get the bot onto your desired server
 
  - index,js
  - server.js
+
  *Because I don't want my bot stolen :^)*
  
 [Host for Free in the Cloud](https://youtu.be/7rU_KyudGBY)
