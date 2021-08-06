@@ -47,7 +47,6 @@ Follow this guide to get the bot onto your desired server
 **NOTE:  YOU WILL NEED TO ADD YOUR OWN:**
 
  - index,js
- - server.js
 
  *Because I don't want my bot stolen :^)*
  

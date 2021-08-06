@@ -1,15 +1,14 @@
 let fightMap = new Map();
-fightMap.set('Roomee#5707', 'https://www.moxfield.com/decks/9fji1iQxgkWcgB8UjGP05w/goldfish');
 
 module.exports = {
     name: 'fight',
-    description: "Declare or accept a fight within a day.",
+    description: "Declare or accept a fight with another player.",
     
     async execute(client, message, args){ 
 
         //Args Checks
         if (args.length != 2) {
-            message.author.send("You have the wrong amount of arguments, it should be '-fight @[user] [link to MoxField.com deck]'");
+            message.author.send("You have the wrong amount of arguments, it should be '-fight [user tag] [link to MoxField.com deck]'");
             return;
         }
 
@@ -50,7 +49,7 @@ module.exports = {
 
         //Now lets check if the challenged is in the map
 
-        console.log("Finished...");
+        console.log("Finished fight command...");
     }
 }
 
@@ -69,7 +68,7 @@ function addFighter(challenger, deckLink, message) {
         
         //Reply that the user is already in a game
         message.author.send("You already have a deck in queue for a fight! Lets finish that one first.");
-        console.log(challenger + " already ahs a deck in the map.");
+        console.log(challenger + " already has a deck in the map.");
         return false;
 
     } else {

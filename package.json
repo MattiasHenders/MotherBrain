@@ -1,7 +1,7 @@
 {
   "name": "mother-brain",
   "version": "1.0.0",
-  "description": "A bot for 5CB Discord Server - Dojo Fights",
+  "description": "A Bot for the Top Deck Lethal Discord Server - Dojo Fights",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
