@@ -28,6 +28,7 @@ ___
 ### <a name="installation"></a> Installation
 
 [![NodeJS](media/node.png)](https://nodejs.org/en/)
+
 _This app is powered by Node.js and is ran on Repl.it_
 
 Clone the repo:
