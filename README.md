@@ -20,7 +20,7 @@ ___
 This repo is a community bot for the Top Deck Lethal Discord Server. Where 5CB - Pauper Games take place.
 Take a look at [the website](https://www.topdecklethalmtg.com/) to learn the rules of this fun, simple to run format. Then join [the Discord server](https://discord.com/invite/kVFJgXm)!
 
-[![Top Deck Lethal](https://lh3.googleusercontent.com/Lg1v4eEwZOQTZIYiNAxGkapn7LmeDHAaOcjX2-plwBdVOLkqZpcxtJ8x8ZMDX_eAm3hOy-vArTiGtBWbA65JuOmQM_eYymdiDEpY5A5-WCrPb8vjoAoAYZLaN3QJxHBjsw=w1280)](https://www.topdecklethalmtg.com/)
+[![Top Deck Lethal](media/topdecklethal.png)](https://www.topdecklethalmtg.com/)
 
 Mother Brain tries to take some of the work off of the mods, and lets players deck test and keep score for simple 1v1 matches completely blindly.
 ___
