@@ -67,7 +67,7 @@ module.exports = {
 
 function addScore(player, score) {
     
-    if (scoreMap.has(player)) {
+    if (scoreMap == undefined || scoreMap.has(player)) {
         
         //Reply that the user is already in a game
         console.log(player + " is in the map. Increasing score");
