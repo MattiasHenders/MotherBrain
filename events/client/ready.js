@@ -1,30 +1,15 @@
 module.exports = (Discord, client, message) => {
-    console.log("Roomee is online!");
-
-    startRentReminder(client);
-    startWasteReminder(client);
+    console.log("Mother Brain is online!");
 }
 
 // Sets a reminder for rent once a month
-function startRentReminder(client) {
+function startReminder(client) {
 
-    console.log("Starting rent reminder.")
-    const command = client.commands.get('rentReminder');
-
-    if (command) {
-        command.execute(client);
-        console.log("Rent reminder is scheduled.")
-    }
-}
-
-// Sets a reminder for rent once a month
-function startWasteReminder(client) {
-
-    console.log("Starting waste reminder.")
-    const command = client.commands.get('garbageReminder');
+    console.log("Starting generic reminder.")
+    const command = client.commands.get('someReminder');
 
     if (command) {
         command.execute(client);
-        console.log("Waste reminder is scheduled.")
+        console.log("Some reminder is scheduled.")
     }
 }
