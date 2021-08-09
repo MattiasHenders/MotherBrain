@@ -1,10 +1,15 @@
-/*let playerArray = new Array();
-let scoreArray = new Array();
+//Get the module with the global variables
+var globalVariables = require('../server');
+
+//Add the global variables
+var playerArray = globalVariables.playerArray;
+var scoreArray = globalVariables.scoreArray;
+var playerArray = globalVariables.playerArray;
+//End of the global variables
 
 let highestScore = -1;
 let highestPlayer = undefined;
-
-const NUMBER_OF_LEADERS = 3;*/
+const NUMBER_OF_LEADERS = 3;
 
 module.exports = {
     name: 'leaderboard',

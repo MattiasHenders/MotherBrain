@@ -1,4 +1,9 @@
-let fightMap = new Map();
+//Get the module with the global variables
+var globalVariables = require('../server');
+
+//Add the global variables
+var fightMap = globalVariables.fightMap;
+//End of the global variables
 
 module.exports = {
     name: 'fight',

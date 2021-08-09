@@ -1,4 +1,9 @@
-//let scoreMap = new Map();
+//Get the module with the global variables
+var globalVariables = require('../server');
+
+//Add the global variables
+var scoreMap = globalVariables.scoreMap;
+//End of the global variables
 
 module.exports = {
     name: 'report',

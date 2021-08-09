@@ -1,3 +1,15 @@
+//=======================================
+//   GLOBAL VARIABLES
+//=======================================
+let playerArray = new Array();
+let scoreArray = new Array();
+let scoreMap = new Map();
+
+exports.playerArray = playerArray;
+exports.scoreArray = scoreArray;
+exports.scoreMap = scoreMap;
+//=======================================
+
 const express = require("express");
 
 const server = express();
