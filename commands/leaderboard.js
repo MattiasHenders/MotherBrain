@@ -21,7 +21,7 @@ module.exports = {
         }
 
         //If report has NEVER been called
-        if (scoreMap == null) {
+        if (scoreMap == null || scoreMap == undefined) {
             printEmptyLeaderboard(client);
             console.log("Scoremap is null, returning");
             return
