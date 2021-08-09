@@ -68,7 +68,9 @@ module.exports = {
 function addScore(player, score) {
     
     if (scoreMap == undefined) {
-        
+
+        scoreMap = new Map();
+
         //Add the user to the map
         console.log(player + " is NOT in the map. Adding and setting score");
 
