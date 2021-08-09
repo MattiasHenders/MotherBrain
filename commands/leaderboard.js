@@ -12,6 +12,8 @@ module.exports = {
     
     async execute(client, message, args){ 
 
+        console.log("Starting leaderboard");
+
         //Args Checks
         if (args.length != 0) {
             message.author.send("You have entered arguments, it should just be '-leaderboard'");
