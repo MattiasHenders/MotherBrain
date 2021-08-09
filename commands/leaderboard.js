@@ -1,11 +1,15 @@
 //Get the module with the global variables
-var globalVariables = require('../server');
-
 //Add the global variables
-var scoreMap = globalVariables.scoreMap;
-var scoreArray = globalVariables.scoreArray;
-var playerArray = globalVariables.playerArray;
+const {
+    getScoreMap,
+    setScoreMap
+} = require('../index');
+
+scoreMap = getScoreMap();
 //End of the global variables
+
+let playerArray = new Array();
+let scoreArray = new Array();
 
 let highestScore = -1;
 let highestPlayer = undefined;
@@ -26,9 +30,9 @@ module.exports = {
         }
 
         //If report has NEVER been called
-        if (scoreMap == null || scoreMap == undefined) {
-            printEmptyLeaderboard(client);
-            console.log("Scoremap is null, returning");
+        if (scoreMap == undefined) {
+            //printEmptyLeaderboard(client);
+            console.log("Scoremap is undefined, returning");
             return
         }
 
@@ -47,6 +51,7 @@ module.exports = {
 
             //Add the top x amount of players
             if (highestScore != -1 && highestPlayer != undefined) {
+                console.log("Adding " + highestPlayer + " with " + highestScore);
                 playerArray.push(highestPlayer);
                 scoreArray.push(highestScore);
             }
@@ -64,6 +69,8 @@ module.exports = {
         //Add in the users specific score who sent the message
         printUserScore(client, message);
 
+        //Always finish by setting the global maps 
+        setScoreMap(scoreMap);
         console.log("Finished leaderboard command...");
     }
 }
@@ -79,32 +86,35 @@ function getLargestMapNumber(value, key, map) {
 }
 
 function printTopLeaders(client) {
-    
-    //Set up the message
-    var message = "🏆 Leaderboard 🏆" + "\n";
-    message += "=================" + "\n\n";
 
-    //Print each leader
+    console.log("Leaderboard is printing with players");
+    
+    var message = "🏆 Leaderboard 🏆" + "\n"
+        + "=================" + "\n";
+
+    //Get each leader
     for (let i = 0; i < playerArray.length; i++) {
 
         //Adds it to the message
-        message += i + ") " + playerArray[i] + "\t\t - SCORE: " + scoreArray[i] + "\n";
+        message += (i + 1) + ") " + playerArray[i] + "\t\tSCORE: " + scoreArray[i] + "\n";
     }
     
     //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === '⚠-test-channel');
+    const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
     channel.send(message);
 }
 
 function printEmptyLeaderboard(client) {
+
+    console.log("Leaderboard is printing empty");
     
     //Set up the message
-    var message = "🏆 Leaderboard 🏆" + "\n";
-    message += "=================" + "\n\n";
-    message += "The Leaderboard is EMPTY! Start some matches to get it going!\n";
+    var message = "🏆 Leaderboard 🏆" + "\n"
+        + "=================" + "\n"
+        + "The Leaderboard is EMPTY! Start some matches to get it going!";
     
     //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === '⚠-test-channel');
+    const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
     channel.send(message);
 }
 
@@ -116,14 +126,15 @@ function printUserScore(client, message) {
 
     //Check that the user HAS a score
     if (userScore == null || userScore == undefined) {
+        console.log("Set user score to 0, user is not found");
         userScore = 0;
     }
 
     //Set up the message
-    var message = "=================\n\n";
-    message += "Your score " + message.author.name + " is: " + userScore;
+    var userDetails = "=================\n"
+        + "Your score @" + message.author.tag + " is: " + userScore;
     
     //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === '⚠-test-channel');
-    channel.send(message);
+    const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
+    channel.send(userDetails);
 }

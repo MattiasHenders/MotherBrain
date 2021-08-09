@@ -1,8 +1,11 @@
 //Get the module with the global variables
-var globalVariables = require('../server');
-
 //Add the global variables
-var fightMap = globalVariables.fightMap;
+const {
+    getFightMap,
+    setFightMap
+} = require('../index');
+
+let fightMap = getFightMap();
 //End of the global variables
 
 module.exports = {
@@ -52,8 +55,8 @@ module.exports = {
             }
         }
 
-        //Now lets check if the challenged is in the map
-
+        //Always finish by setting the global maps 
+        setFightMap(fightMap);
         console.log("Finished fight command...");
     }
 }
@@ -118,7 +121,7 @@ function startFight(fighter1, fighter2, client) {
     message += "Fighter 2: @" + fighter2Name + " - " + link2;
     
     //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === '⚠-test-channel');
+    const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
     channel.send(message);
 
     //Remove the fighters from the map

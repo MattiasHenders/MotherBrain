@@ -1,8 +1,11 @@
 //Get the module with the global variables
-var globalVariables = require('../server');
-
 //Add the global variables
-var scoreMap = globalVariables.scoreMap;
+const {
+    getScoreMap,
+    setScoreMap
+} = require('../index');
+
+let scoreMap = getScoreMap();
 //End of the global variables
 
 module.exports = {
@@ -61,6 +64,19 @@ module.exports = {
         addScore(playerOneTag, playerOneScore);
         addScore(playerTwoTag, playerTwoScore);
 
+
+        var message = "✏️ Report Recieved ✏️\n"
+            + "=================\n"
+            + "You have reported:\n"
+            + "@:"+ playerOneTag + ": " + playerOneScore + "\n"
+            + "@:"+ playerTwoTag + ": " + playerTwoScore + "\n"
+
+        //Send message to the specific channel
+        const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
+        channel.send(message);
+
+        //Always finish by setting the global maps 
+        setScoreMap(scoreMap);
         console.log("Finished score command...");
     }
 }
