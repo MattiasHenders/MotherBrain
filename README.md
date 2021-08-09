@@ -83,6 +83,8 @@ Create an issue if you want to add to this!
  - ~~Let the bot handle 1v1 blind matches using commands~~
  - ~~Have matches send automatically to a specific sever channel~~
  - ~~Add a score system for dojo matches~~
+ - ~~Tag the users properly~~
+ - ~~Add a report command~~
  - Add a help command
  - Add check for /goldfish at the end of moxfield link
  - Get the bot on the Discord server
