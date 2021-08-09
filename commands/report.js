@@ -1,4 +1,4 @@
-let scoreMap = new Map();
+//let scoreMap = new Map();
 
 module.exports = {
     name: 'report',

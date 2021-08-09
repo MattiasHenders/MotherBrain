@@ -1,10 +1,10 @@
-let playerArray = new Array();
+/*let playerArray = new Array();
 let scoreArray = new Array();
 
 let highestScore = -1;
 let highestPlayer = undefined;
 
-const NUMBER_OF_LEADERS = 3;
+const NUMBER_OF_LEADERS = 3;*/
 
 module.exports = {
     name: 'leaderboard',
