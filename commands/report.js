@@ -64,12 +64,15 @@ module.exports = {
         addScore(playerOneTag, playerOneScore);
         addScore(playerTwoTag, playerTwoScore);
 
-
+        //Get players tags
+        playerOneTag = client.users.cache.find(user => user.username == playerOneTag);
+        playerTwoTag = client.users.cache.find(user => user.username == playerTwoTag);
+        
         var message = "✏️ Report Recieved ✏️\n"
             + "=================\n"
             + "You have reported:\n"
-            + "@:"+ playerOneTag + ": " + playerOneScore + "\n"
-            + "@:"+ playerTwoTag + ": " + playerTwoScore + "\n"
+            + "<@"+ playerOneTag + ">: " + playerOneScore + "\n"
+            + "<@"+ playerTwoTag + ">: " + playerTwoScore + "\n"
 
         //Send message to the specific channel
         const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');

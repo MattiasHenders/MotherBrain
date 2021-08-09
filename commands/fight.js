@@ -113,12 +113,16 @@ function startFight(fighter1, fighter2, client) {
     var fighter1Name = fighter1.split('#')[0];
     var fighter2Name = fighter2.split('#')[0];
 
+    //Get users tags
+    var fighter1Tag = client.users.cache.find(user => user.username == fighter1Name);
+    var fighter2Tag = client.users.cache.find(user => user.username == fighter2Name);
+
     //Set up the message
     var message = "🥊 Fight Begin 🥊" + "\n";
     message += "=================" + "\n\n";
-    message += "Fighter 1: @" + fighter1Name + " - " + link1 + "\n\n";
+    message += "Fighter 1: <@" + fighter1Tag + "> - " + link1 + "\n\n";
     message += "vs. " + "\n\n";
-    message += "Fighter 2: @" + fighter2Name + " - " + link2;
+    message += "Fighter 2: <@" + fighter2Tag + "> - " + link2;
     
     //Send message to the specific channel
     const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');

@@ -132,7 +132,7 @@ function printUserScore(client, message) {
 
     //Set up the message
     var userDetails = "=================\n"
-        + "Your score @" + message.author.tag + " is: " + userScore;
+        + "Your score <@" + message.author + "> is: " + userScore;
     
     //Send message to the specific channel
     const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
