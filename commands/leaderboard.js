@@ -20,6 +20,13 @@ module.exports = {
             return;
         }
 
+        //If report has NEVER been called
+        if (scoreMap == null) {
+            printEmptyLeaderboard(client);
+            console.log("Scoremap is null, returning");
+            return
+        }
+
         //Dont ever change the score map, use temp arrays
         playerArray = new Array();
         scoreArray = new Array();
