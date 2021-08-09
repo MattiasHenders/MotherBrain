@@ -2,7 +2,7 @@
 var globalVariables = require('../server');
 
 //Add the global variables
-var playerArray = globalVariables.playerArray;
+var scoreMap = globalVariables.scoreMap;
 var scoreArray = globalVariables.scoreArray;
 var playerArray = globalVariables.playerArray;
 //End of the global variables
