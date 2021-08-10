@@ -68,8 +68,8 @@ module.exports = {
         var playerTwoName = playerTwoTag.split('#')[0]
 
         //Get players tags
-        playerOneTag = client.users.cache.find(user => user.username == playerOneTag);
-        playerTwoTag = client.users.cache.find(user => user.username == playerTwoTag);
+        playerOneTag = client.users.cache.find(user => user.username == playerOneName);
+        playerTwoTag = client.users.cache.find(user => user.username == playerTwoName);
         
         var message = "✏️ Report Recieved ✏️\n"
             + "=================\n"
@@ -83,7 +83,7 @@ module.exports = {
 
         //Always finish by setting the global maps 
         setScoreMap(scoreMap);
-        console.log("Finished score command...");
+        console.log("Finished report command...");
     }
 }
 
