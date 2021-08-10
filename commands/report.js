@@ -64,6 +64,9 @@ module.exports = {
         addScore(playerOneTag, playerOneScore);
         addScore(playerTwoTag, playerTwoScore);
 
+        var playerOneName = playerOneTag.split('#')[0]
+        var playerTwoName = playerTwoTag.split('#')[0]
+
         //Get players tags
         playerOneTag = client.users.cache.find(user => user.username == playerOneTag);
         playerTwoTag = client.users.cache.find(user => user.username == playerTwoTag);
