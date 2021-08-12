@@ -85,10 +85,13 @@ Create an issue if you want to add to this!
  - ~~Add a score system for dojo matches~~
  - ~~Tag the users properly~~
  - ~~Add a report command~~
- - Add a help command
- - Add check for /goldfish at the end of moxfield link
- - Get the bot on the Discord server
- - Host the bot on Repl.it
+ - ~~Add a help command~~
+ - ~~Add check for /goldfish at the end of moxfield link~~
+ - ~~Get the bot on the Discord server~~
+ - ~~Host the bot on Repl.it~~
+ - Change leaderboard to embeds
+ - Change score to an embed
+ - Chnage Report to an embed
 ___
 
 ![Mother Brain](media/logo_transparent.png)
