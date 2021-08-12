@@ -6,7 +6,7 @@ module.exports = {
     
     async execute(client, message, args, Discord, profileData){
     
-        console.log("Starting score command");
+        console.log("Starting add command");
 
         //Set up the message with tags
         var messageToSend = "You have been added to the database!";
@@ -14,6 +14,6 @@ module.exports = {
         //Send it
         message.author.send(messageToSend);
 
-        console.log("Ending score command.");
+        console.log("Ending add command.");
     }
 }
