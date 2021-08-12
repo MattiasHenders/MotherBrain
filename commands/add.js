@@ -9,7 +9,7 @@ module.exports = {
         console.log("Starting score command");
 
         //Set up the message with tags
-        var messageToSend = "<@" + profileData.userID + ">," + " you have been added to the database!";
+        var messageToSend = "You have been added to the database!";
 
         //Send it
         message.author.send(messageToSend);
