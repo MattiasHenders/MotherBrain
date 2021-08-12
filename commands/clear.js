@@ -1,18 +1,11 @@
-//Get the module with the global variables
-//Add the global variables
-const {
-    getFightMap,
-    setFightMap
-} = require('../index');
-
-let fightMap = getFightMap();
-//End of the global variables
+require("dotenv").config();
+const profileModel = require('../models/profileSchema');
 
 module.exports = {
     name: 'clear',
     description: "Removes any fights from this user from the fight list",
     
-    async execute(client, message, args){ 
+    async execute(client, message, args, Discord, profileData){ 
 
         console.log("Starting clear command");
 
@@ -22,26 +15,16 @@ module.exports = {
             return;
         }
 
-        var challengerName = message.author.tag;
+        var filter = {userID: profileData.userID};
+        var update = {
+            dojoDeck: "",
+            dojoOpponent: ""
+        };
 
-        //Check if the Map has the fighter
-        if (fightMap.has(challengerName)) {
-           
-            //Remove the fighter from the map
-            fightMap.delete(challengerName);
-            console.log("Deleted previous fight");
+        await profileModel.findOneAndUpdate(filter, update);
 
-            //Let the fighter know its cleared
-            message.author.send("Cleared your fight! You may start a new fight anytime!");
-           
-        } else {
-            //Let the user know they are not in queue
-            console.log("User didn't have previous fights");
-            message.author.send("You did not have any previous fights! You may start a new fight anytime!");
-        }
-
-        //Always finish by setting the global maps 
-        setFightMap(fightMap);
+        message.author.send("Cleared all previous matches! Enter a new one anytime.");
+        
         console.log("Finished clear command...");
     }
 }

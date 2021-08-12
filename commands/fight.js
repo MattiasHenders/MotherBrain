@@ -1,64 +1,149 @@
-//Get the module with the global variables
-//Add the global variables
-const {
-    getFightMap,
-    setFightMap
-} = require('../index');
-
-let fightMap = getFightMap();
-//End of the global variables
+require("dotenv").config();
+const profileModel = require('../models/profileSchema');
 
 module.exports = {
     name: 'fight',
     description: "Declare or accept a fight with another player.",
     
-    async execute(client, message, args){ 
+    async execute(client, message, args, Discord, profileData){ 
+
+        let channelToSend = getChannelToSend();
 
         //Args Checks
-        if (args.length != 2) {
-            message.author.send("You have the wrong amount of arguments, it should be '-fight [user tag] [link to MoxField.com deck]'");
+        if ((args.length != 2 && args.length != 1)) {
+            message.author.send("You have the wrong amount of arguments, it should be -fight @User 'link to MoxField.com deck'\n"
+                + "Or just -fight 'link to MoxField.com deck'");
             return;
         }
 
-        var challengerName = message.author.tag;
-        var opponentName = args[0];
-        var deckLink = args[1];
-
-        if (!opponentName.includes("#")) {
-            console.log("args0 = " + args[0]);
-            message.author.send("Your first argument should be '[user#numbers]'");
-            return;
+        //Check if the moxfield link needs '/goldfish' added to the end
+        if (args.length == 1 && !args[0].includes("/goldfish")) {
+            args[0] = args[0] + "/goldfish"
+        } else if (args.length == 2 && !args[1].includes("/goldfish")) {
+            args[1] = args[1] + "/goldfish"
         }
 
-        if (!deckLink.includes("moxfield")) {
-            console.log("args1 = " + args[1]);
+        if (args.length == 1 && args[0].includes("moxfield.com")) {
+            
+            //Add just the fight to the database, do not fight
+            let playerOne = profileData;
 
-            message.author.send("Your second argument should be a 'moxfield.com' link");
-            return;
-        }
+            //Get the deck
+            let dojoDeck = args[0];
 
-        //Check if the Map is empty
-        if (fightMap.length == 0) {
-            //Right away add this person to the fight
-            addFighter(challengerName, deckLink, message);
-            return;
-        }
+            addFighterToDataBase(playerOne, dojoDeck);
+            message.author.send("Your deck is added, just need to wait for your opponent now!");
+            
+        } else if (args.length == 2 && args[1].includes("moxfield.com")) {
 
-        //The map is not empty so check if the fighter is in there
-        if (addFighter(challengerName, deckLink, message)) {
+            //Add the fight and try to fight a given user
+            var opponentID = message.mentions.users.first().id;
+            let dojoDeck = args[1];
 
-            //Fighter is added, check if his opponent is in the map
-            if (checkForOpponent(opponentName)) {
+            //Check the opponent is in the database
+            let playerOne = profileData;
+            let playerTwo = await profileModel.findOne({userID: opponentID});
 
-                //Oppoonent is in the map! Start the fight!
-                startFight(challengerName, opponentName, client);
+            //Add the deck to the user
+            playerOne.dojoDeck = dojoDeck;
+
+            //If no opponent found, return an deafult message
+            if (playerTwo == undefined
+                || playerTwo.dojoDeck == "") {
+
+                addFighterToDataBase(playerOne, dojoDeck);
+                
+                message.author.send("Your opponent is not ready yet. You're deck has been added though!");
+                return;
             }
+
+            //At this point the fight is on, start it up
+            sendFightMessage(client, channelToSend, playerOne, playerTwo);
+
+            //After the fight clear both fighters
+            clearFighters(playerOne, playerTwo);
+
+        } else {
+
+            //Say error message
+            message.author.send("Some arguments we're incorrect, it should be -fight @User 'link to MoxField.com deck'\n"
+                + "Or just -fight 'link to MoxField.com deck'");
         }
 
-        //Always finish by setting the global maps 
-        setFightMap(fightMap);
         console.log("Finished fight command...");
     }
+}
+
+async function addFighterToDataBase(player, dojoDeck, opponent) {
+
+    //Hard check for opponent
+    opponent = (typeof opponent !== 'undefined') ?  opponent : undefined
+
+    //Set player to database
+    try {
+        var filter = {userID: player.userID};
+        var update = {dojoDeck: dojoDeck};
+
+        if (opponent != undefined) {
+            update = {dojoDeck: dojoDeck,
+                      dojoOpponent: opponent.userID};
+        }
+
+        await profileModel.updateOne(filter, update);
+        console.log("Set player " + player.userTag + " with deck " + dojoDeck);
+
+    } catch (err) {
+        console.log("Error playerOne sending report to database: " + err);
+    }
+}
+
+function sendFightMessage(client, channelToSend, fighter1, fighter2) {
+
+    //Set up the messages
+    var messageToSend = "🥊 Fight Begin 🥊" + "\n";
+    messageToSend += "=================" + "\n\n";
+    messageToSend += "Fighter 1: <@" + fighter1.userID + "> - " + fighter1.dojoDeck + "\n\n";
+    messageToSend += "vs. " + "\n\n";
+    messageToSend += "Fighter 2: <@" + fighter2.userID + "> - " + fighter2.dojoDeck;
+    
+    //Send message to the specific channel
+    const channel = client.channels.cache.find(channel => channel.name === channelToSend);
+    channel.send(messageToSend);
+
+    //Remove the fighters decks and opponents from the database
+
+
+    console.log("FIGHT OVER!");
+}
+
+async function clearFighters(playerOne, playerTwo) {
+    
+    //Clear player 1 to database
+    try {
+        var filter = {userID: playerOne.userID};
+        var update = {dojoDeck: "",
+                      dojoOpponent: ""};
+
+        await profileModel.updateOne(filter, update);
+        console.log("Cleared player" + playerOne.userTag);
+
+    } catch (err) {
+        console.log("Error playerOne clearing database: " + err);
+    }
+
+    //Clear player 2 to database
+    try {
+        var filter = {userID: playerTwo.userID};
+        var update = {dojoDeck: "",
+                      dojoOpponent: ""};
+
+        await profileModel.updateOne(filter, update);
+        console.log("Cleared player" + playerTwo.userTag);
+
+    } catch (err) {
+        console.log("Error playerOne clearing database: " + err);
+    }
+
 }
 
 //Use later if we want to limit replies to a day...
@@ -70,67 +155,15 @@ function boolDateOverADay(first, second) {
     return (days >= 1);
 }
 
-function addFighter(challenger, deckLink, message) {
-    
-    if (fightMap.has(challenger)) {
-        
-        //Reply that the user is already in a game
-        message.author.send("You already have a deck in queue for a fight! Lets finish that one first.");
-        console.log(challenger + " already has a deck in the map.");
-        return false;
+//Gets the channel to send based on .env file
+function getChannelToSend() {
 
-    } else {
-       
-        //Add the user to the map
-        fightMap.set(challenger, deckLink);
-        console.log("Added " + challenger + " to the map.");
-        return true;
+    var boolTesting = process.env.BOOL_TESTING;
+    var channel = process.env.PRODUCTION_CHANNEL;
+
+    if (boolTesting == 'true') {
+        channel = process.env.TEST_CHANNEL;
     }
-}
-
-function checkForOpponent(opponentName) {
     
-    if (fightMap.has(opponentName)) {
-        
-        //Opponent found, will start fight in startFight()
-        console.log("Found" + opponentName + " in the map!");
-        return true;
-
-    } else {
-       
-        //No opponent found, let the user know their fight will start when the opponent replies
-        console.log("Didn't find " + opponentName + " in the map...");
-        return false;
-    }
-}
-
-function startFight(fighter1, fighter2, client) {
-    
-    //Get the links
-    var link1 = fightMap.get(fighter1);
-    var link2 = fightMap.get(fighter2);
-
-    var fighter1Name = fighter1.split('#')[0];
-    var fighter2Name = fighter2.split('#')[0];
-
-    //Get users tags
-    var fighter1Tag = client.users.cache.find(user => user.username == fighter1Name);
-    var fighter2Tag = client.users.cache.find(user => user.username == fighter2Name);
-
-    //Set up the message
-    var message = "🥊 Fight Begin 🥊" + "\n";
-    message += "=================" + "\n\n";
-    message += "Fighter 1: <@" + fighter1Tag + "> - " + link1 + "\n\n";
-    message += "vs. " + "\n\n";
-    message += "Fighter 2: <@" + fighter2Tag + "> - " + link2;
-    
-    //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === '5cb-dojo');
-    channel.send(message);
-
-    //Remove the fighters from the map
-    fightMap.delete(fighter1);
-    fightMap.delete(fighter2);
-
-    console.log("FIGHT OVER!");
+    return channel
 }
