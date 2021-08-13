@@ -1,5 +1,6 @@
 require("dotenv").config();
 const profileModel = require('../models/profileSchema');
+const deckModel = require('../models/deckSchema');
 
 module.exports = {
     name: 'fight',
@@ -37,12 +38,20 @@ module.exports = {
         } else if (args.length == 2 && args[1].includes("moxfield.com")) {
 
             //Add the fight and try to fight a given user
-            var opponentID = message.mentions.users.first().id;
+            var opponentTag = args[0];
             let dojoDeck = args[1];
+
+            //Try and see if the deck has been used before
+            let deckSearch = await deckModel.findOne({deck: opponentTag});
+
+            //Add deck to the database if not found
+            if (deckSearch == null || deckSearch == undefined) {
+                addDeckToDatabase(playerOne.userID, dojoDeck);
+            }
 
             //Check the opponent is in the database
             let playerOne = profileData;
-            let playerTwo = await profileModel.findOne({userID: opponentID});
+            let playerTwo = await profileModel.findOne({userTag: opponentTag});
 
             //Add the deck to the user
             playerOne.dojoDeck = dojoDeck;
@@ -166,4 +175,19 @@ function getChannelToSend() {
     }
     
     return channel
+}
+
+async function addDeckToDatabase(userID, deckLink) {
+
+    await deckModel.insertOne(
+        {   userID: userID,
+            deckLink: deckLink,
+            card1: "",
+            card2: "",
+            card3: "",
+            card4: "",
+            card5: "",
+            cardExtra: "",
+        }
+     );
 }

@@ -15,15 +15,26 @@ client.events = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord)
 });
 
-//Connect to the database
-mongoose.connect(process.env.DB_CONNECT, {
+//Connect to the users database
+mongoose.createConnection(process.env.DB_CONNECT_USERS, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
 }).then(() => {
-    console.log("Connected to the database");
+    console.log("Connected to the users database");
 }).catch((err) => {
-    console.log("Failed to connect to the database: " + err);
+    console.log("Failed to connect to the users database: " + err);
+});
+
+//Connect to the decks database
+mongoose.createConnection(process.env.DB_CONNECT_DECKS, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}).then(() => {
+    console.log("Connected to the decks database");
+}).catch((err) => {
+    console.log("Failed to connect to the decks database: " + err);
 });
 
 //Must stay at the end!
