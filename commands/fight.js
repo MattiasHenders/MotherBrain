@@ -32,6 +32,19 @@ module.exports = {
             //Get the deck
             let dojoDeck = args[0];
 
+            let deckSearch;
+            //Try and see if the deck has been used before
+            try {
+                deckSearch = await deckModel.findOne({deckLink: dojoDeck});
+            } catch (err) { 
+                deckSearch = undefined;
+            }
+
+            //Add deck to the database if not found
+            if (deckSearch == undefined) {
+                addDeckToDatabase(playerOne.userID, dojoDeck);
+            }
+
             addFighterToDataBase(playerOne, dojoDeck);
             message.author.send("Your deck is added, just need to wait for your opponent now!");
             
@@ -41,17 +54,22 @@ module.exports = {
             var opponentTag = args[0];
             let dojoDeck = args[1];
 
-            //Try and see if the deck has been used before
-            let deckSearch = await deckModel.findOne({deckLink: dojoDeck});
-
-            //Add deck to the database if not found
-            if (deckSearch == null || deckSearch == undefined) {
-                addDeckToDatabase(playerOne.userID, dojoDeck);
-            }
-
             //Check the opponent is in the database
             let playerOne = profileData;
             let playerTwo = await profileModel.findOne({userTag: opponentTag});
+
+            let deckSearch;
+            //Try and see if the deck has been used before
+            try {
+                deckSearch = await deckModel.findOne({deckLink: dojoDeck});
+            } catch (err) { 
+                deckSearch = undefined;
+            }
+
+            //Add deck to the database if not found
+            if (deckSearch == undefined) {
+                addDeckToDatabase(playerOne.userID, dojoDeck);
+            }
 
             //Add the deck to the user
             playerOne.dojoDeck = dojoDeck;
@@ -179,7 +197,7 @@ function getChannelToSend() {
 
 async function addDeckToDatabase(userID, deckLink) {
 
-    await deckModel.insertOne(
+    await deckModel.create(
         {   userID: userID,
             deckLink: deckLink,
             card1: "",
