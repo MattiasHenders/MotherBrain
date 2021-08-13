@@ -42,7 +42,7 @@ module.exports = {
             let dojoDeck = args[1];
 
             //Try and see if the deck has been used before
-            let deckSearch = await deckModel.findOne({deck: opponentTag});
+            let deckSearch = await deckModel.findOne({deckLink: dojoDeck});
 
             //Add deck to the database if not found
             if (deckSearch == null || deckSearch == undefined) {
