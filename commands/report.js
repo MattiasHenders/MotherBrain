@@ -85,15 +85,26 @@ module.exports = {
 
 function sendReportMessage(client, channelToSend, playerOne, playerTwo, playerOneScore, playerTwoScore) {
     
-    var message = "✏️ Report Recieved ✏️\n"
-    + "=================\n"
-    + "You have reported:\n"
+    var message = "You have reported:\n"
     + "<@"+ playerOne.userID + "> : " + playerOneScore + "\n"
     + "<@"+ playerTwo.userID + "> : " + playerTwoScore;
 
+    //Set up the messages
+    const reportEmbed = {
+        "type": "rich",
+        "title": `✏️ Report Recieved ✏️`,
+        "description": `${message}`,
+        "color": 0xfce938,
+        "thumbnail": {
+            "url": `https://github.com/MattiasHenders/MotherBrain/blob/main/media/topdecklethal%20logo.png?raw=true`,
+            "height": 0,
+            "width": 0
+        },
+    };
+
     //Send message to the specific channel
-    const channel = client.channels.cache.find(channel => channel.name === channelToSend);
-    channel.send(message);
+    const channel = client.channels.cache.find(channel => channel.name == channelToSend);
+    channel.send({embed: reportEmbed});
 }
 
 function sendReportError(client, channelToSend) {

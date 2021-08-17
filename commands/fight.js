@@ -126,19 +126,24 @@ async function addFighterToDataBase(player, dojoDeck, opponent) {
 
 function sendFightMessage(client, channelToSend, fighter1, fighter2) {
 
-    //Set up the messages
-    var messageToSend = "🥊 Fight Begin 🥊" + "\n";
-    messageToSend += "=================" + "\n\n";
-    messageToSend += "Fighter 1: <@" + fighter1.userID + "> - " + fighter1.dojoDeck + "\n\n";
-    messageToSend += "vs. " + "\n\n";
-    messageToSend += "Fighter 2: <@" + fighter2.userID + "> - " + fighter2.dojoDeck;
-    
-    //Send message to the specific channel
+    //Find the channel to send to
     const channel = client.channels.cache.find(channel => channel.name === channelToSend);
-    channel.send(messageToSend);
 
-    //Remove the fighters decks and opponents from the database
+    //Set up the messages
+    const fightEmbed = {
+        "type": "rich",
+        "title": `🥊 FIGHT START 🥊`,
+        "description": `\nFighter 1: <@${fighter1.userID}> - ${fighter1.dojoDeck}\n\nvs.\n\nFighter 2: <@${fighter2.userID}> - ${fighter2.dojoDeck}`,
+        "color": 0xff0000,
+        "thumbnail": {
+            "url": `https://github.com/MattiasHenders/MotherBrain/blob/main/media/topdecklethal%20logo.png?raw=true`,
+            "height": 0,
+            "width": 0
+        },
+      };
 
+    //Send message to the specific channel
+    channel.send({embed: fightEmbed});
 
     console.log("FIGHT OVER!");
 }

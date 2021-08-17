@@ -48,8 +48,7 @@ function printTopLeaders(client, channelToSend, playerArray) {
 
     console.log("Leaderboard is printing with players");
     
-    var message = "🏆 Leaderboard 🏆" + "\n"
-        + "=================" + "\n";
+    var message = "";
 
     //Get each leader
     for (let i = 0; i < playerArray.length; i++) {
@@ -57,12 +56,25 @@ function printTopLeaders(client, channelToSend, playerArray) {
         //Adds it to the message
         console.log(playerArray[i]);
 
-        message += (i + 1) + ") " + playerArray[i].userTag.split("#")[0] + "\t\tSCORE: " + playerArray[i].dojoPoints + "\n";
+        message += (i + 1) + ") " + playerArray[i].userTag.split("#")[0] + "\n> SCORE: " + playerArray[i].dojoPoints + "\n\n";
     }
     
+    //Set up the messages
+    const leaderEmbed = {
+        "type": "rich",
+        "title": `🏆 Leaderboard 🏆`,
+        "description": `${message}`,
+        "color": 0xfce938,
+        "thumbnail": {
+            "url": `https://github.com/MattiasHenders/MotherBrain/blob/main/media/topdecklethal%20logo.png?raw=true`,
+            "height": 0,
+            "width": 0
+        },
+    };
+
     //Send message to the specific channel
     const channel = client.channels.cache.find(channel => channel.name == channelToSend);
-    channel.send(message);
+    channel.send({embed: leaderEmbed});
 }
 
 function printEmptyLeaderboard(client, channelToSend) {
@@ -70,20 +82,30 @@ function printEmptyLeaderboard(client, channelToSend) {
     console.log("Leaderboard is printing empty");
     
     //Set up the message
-    var message = "🏆 Leaderboard 🏆" + "\n"
-        + "=================" + "\n"
-        + "The Leaderboard is EMPTY! Start some matches to get it going!";
-    
+    var message = "The Leaderboard is EMPTY! Start some matches to get it going!";
+
+    //Set up the messages
+    const leaderEmbed = {
+        "type": "rich",
+        "title": `🏆 Leaderboard 🏆`,
+        "description": `${message}`,
+        "color": 0xfce938,
+        "thumbnail": {
+            "url": `https://github.com/MattiasHenders/MotherBrain/blob/main/media/topdecklethal%20logo.png?raw=true`,
+            "height": 0,
+            "width": 0
+        },
+    };
+
     //Send message to the specific channel
     const channel = client.channels.cache.find(channel => channel.name == channelToSend);
-    channel.send(message);
+    channel.send({embed: leaderEmbed});
 }
 
 function printUserScore(client, channelToSend, player) {
 
     //Set up the message
-    var userDetails = "=================\n"
-        + "Your score <@" + player.userID + "> is: " + player.dojoPoints;
+    var userDetails = "Your score <@" + player.userID + "> is: " + player.dojoPoints + " points";
     
     //Send message to the specific channel
     const channel = client.channels.cache.find(channel => channel.name == channelToSend);
