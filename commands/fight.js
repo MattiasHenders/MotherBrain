@@ -66,16 +66,14 @@ module.exports = {
                 deckSearch = undefined;
             }
 
-            //Add deck to the database if not found
-            if (deckSearch == undefined) {
-                addDeckToDatabase(playerOne.userID, dojoDeck);
-            }
+            //Add the first players deck
+            addDeckToDatabase(playerOne.userID, dojoDeck);
 
             //Add the deck to the user
             playerOne.dojoDeck = dojoDeck;
 
             //If no opponent found, return an deafult message
-            if (playerTwo == undefined
+            if (playerTwo == undefined || playerTwo.dojoDeck == undefined
                 || playerTwo.dojoDeck == "") {
 
                 addFighterToDataBase(playerOne, dojoDeck);
